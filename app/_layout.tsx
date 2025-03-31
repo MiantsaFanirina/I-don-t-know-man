@@ -1,18 +1,18 @@
 import {Slot, Stack} from 'expo-router';
 import {SafeAreaView, SafeAreaProvider} from "react-native-safe-area-context";
 import ClerkConvexProvider from "@/providers/ClerkConvexProvider";
+import {useAuth} from "@clerk/clerk-expo";
 
 
 export default function RootLayout() {
-
-  return (
-      <ClerkConvexProvider>
-          <SafeAreaProvider>
-              <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
-                  <Stack screenOptions={{ headerShown: false }}/>
-              </SafeAreaView>
-          </SafeAreaProvider>
-      </ClerkConvexProvider>
-  );
+    return (
+        <ClerkConvexProvider>
+            <SafeAreaProvider>
+                <SafeAreaView style={{ flex: 1, backgroundColor: '#000' }}>
+                    <Stack screenOptions={{ headerShown: false }}/>
+                </SafeAreaView>
+            </SafeAreaProvider>
+        </ClerkConvexProvider>
+    );
 }
 

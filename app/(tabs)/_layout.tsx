@@ -1,8 +1,24 @@
-import {Tabs} from "expo-router";
+import {Tabs, useRouter, useSegments} from "expo-router";
 import {Ionicons} from "@expo/vector-icons";
 import {COLORS} from "@/constants/theme";
+import {useAuth} from "@clerk/clerk-expo";
+import {useEffect} from "react";
 
 const TabLayout = () => {
+
+    // check if the user is logged in
+    const {isLoaded, isSignedIn} = useAuth()
+    const router = useRouter()
+
+    useEffect(() => {
+        if (!isLoaded) return;
+        if(!isSignedIn) {
+            router.replace("/(auth)/sign-in")
+        }
+    }, [isLoaded, isSignedIn])
+
+    if (!isLoaded) return null;
+
     return (
         <Tabs
             screenOptions={{
