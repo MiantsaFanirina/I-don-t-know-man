@@ -1,4 +1,4 @@
-import {Text, TouchableOpacity, View} from "react-native";
+import {Text, TouchableOpacity, TouchableWithoutFeedback, View} from "react-native";
 import {styles} from "@/styles/feed.styles";
 import {Link} from "expo-router";
 import {Image} from "expo-image";
@@ -46,6 +46,19 @@ const Post = ({post} : postProps) => {
         }
     }
 
+    // Handle double tap on the Image to handle Like
+    let lastTap = Date.now();
+    const handleDoubleTap = async () => {
+        const now = Date.now();
+        const DOUBLE_PRESS_DELAY = 1000;
+        if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
+            await handleLike()
+        } else {
+            lastTap = now;
+        }
+    }
+
+
     return (
         <View style={styles.post}>
             {/*POST HEADER*/}
@@ -78,14 +91,15 @@ const Post = ({post} : postProps) => {
             </View>
 
             {/*IMAGE*/}
-            <Image
-                source={post.imageUrl}
-                style={styles.postImage}
-                contentFit={"cover"}
-                transition={200}
-                cachePolicy={"memory-disk"}
-            />
-
+            <TouchableWithoutFeedback onPress={handleDoubleTap}>
+                <Image
+                    source={post.imageUrl}
+                    style={styles.postImage}
+                    contentFit={"cover"}
+                    transition={200}
+                    cachePolicy={"memory-disk"}
+                />
+            </TouchableWithoutFeedback>
             {/*POST ACTIONS*/}
             <View style={styles.postActions}>
 

@@ -49,6 +49,7 @@ const Index = () => {
 
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 60}}>
                 {/*STORY SECTION*/}
+                {/*todo : need to be optimised*/}
                 <ScrollView
                     horizontal={true}
                     showsHorizontalScrollIndicator={false}
@@ -61,6 +62,7 @@ const Index = () => {
 
 
                 {/*POST SECTION*/}
+                {/*todo : need to be optimised*/}
                 {posts.map((post) => (
                     <Post key={post._id} post={post}/>
                 ))}
