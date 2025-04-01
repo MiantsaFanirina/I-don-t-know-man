@@ -4,9 +4,48 @@ import {Link} from "expo-router";
 import {Image} from "expo-image";
 import {Ionicons} from "@expo/vector-icons";
 import {COLORS} from "@/constants/theme";
+import {Id} from "@/convex/_generated/dataModel";
+import {useState} from "react";
+import {toggleLike} from "@/convex/posts";
+import {useMutation} from "convex/react";
+import {api} from "@/convex/_generated/api";
 
-// todo : add the actual type
-const Post = ({post} : {post:any}) => {
+type postProps = {
+    post: {
+        _id: Id<"posts">;
+        imageUrl: string;
+        caption?: string;
+        likes: number;
+        comments: number;
+        _creationTime: number;
+        isLiked: boolean;
+        isBookmarked: boolean;
+        author: {
+            _id: string;
+            username: string;
+            image: string;
+        };
+    }
+}
+
+const Post = ({post} : postProps) => {
+
+    const [isLiked, setIsLiked] = useState(post.isLiked)
+    const [likesCount, setLikesCount] = useState(post.likes)
+
+    const toggleLike = useMutation(api.posts.toggleLike)
+
+    const handleLike = async () => {
+        try {
+            const stateIsLiked = await toggleLike({postId: post._id})
+            setIsLiked(stateIsLiked)
+            setLikesCount((prev) => (stateIsLiked ? prev + 1 : prev - 1))
+        }
+        catch (e) {
+            console.error("Error toggling like:", e)
+        }
+    }
+
     return (
         <View style={styles.post}>
             {/*POST HEADER*/}
@@ -51,8 +90,12 @@ const Post = ({post} : {post:any}) => {
             <View style={styles.postActions}>
 
                 <View style={styles.postActionsLeft}>
-                    <TouchableOpacity>
-                        <Ionicons name={"heart-outline"} size={24} color={COLORS.white}/>
+                    <TouchableOpacity onPress={handleLike}>
+                        <Ionicons
+                            name={isLiked ? "heart" : "heart-outline"}
+                            size={24}
+                            color={isLiked ? COLORS.primary : COLORS.white}
+                        />
                     </TouchableOpacity>
                     
                     <TouchableOpacity>
@@ -69,7 +112,7 @@ const Post = ({post} : {post:any}) => {
             {/*todo : fix raw text*/}
             <View style={styles.postInfo}>
                 <Text style={styles.likesText}>
-                    Be the first to like
+                    {likesCount > 0 ? `${likesCount.toLocaleString()} likes` : "Be the first to like"}
                 </Text>
                 {post.caption && (
                     <View style={styles.captionContainer}>
