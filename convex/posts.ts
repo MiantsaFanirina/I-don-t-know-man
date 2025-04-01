@@ -1,5 +1,6 @@
-import {mutation} from "./_generated/server";
+import {mutation, query} from "./_generated/server";
 import {v} from "convex/values";
+import {getAuthenticatedUser} from "./users";
 
 export const generateUploadUrl = mutation(async (ctx) =>{
 
@@ -17,19 +18,8 @@ export const createPost = mutation({
         storage: v.id("_storage"),
     },
     handler: async (ctx, args) => {
-        // Check for authentication
-        const identity = await ctx.auth.getUserIdentity()
-        if (!identity) throw new Error("Not authorized");
-
-        // get the current user
-        const currentUser = await ctx.db
-            .query("users")
-            .withIndex(
-                "by_clerk_id",
-                (q) => q.eq("clerkId", identity.subject)
-            )
-            .first()
-        if (!currentUser) throw new Error("User not found")
+        // Get authenticated User
+        const currentUser = await getAuthenticatedUser(ctx)
 
         // get the image url
         const imageUrl = await ctx.storage.getUrl(args.storage)
@@ -53,6 +43,52 @@ export const createPost = mutation({
         // return the post's id
         return postId
 
+
+    }
+})
+
+export const getFeedPost = query({
+    handler: async (ctx) => {
+        // Get authenticated User
+        const currentUser = await getAuthenticatedUser(ctx)
+
+        // Get all posts
+        const posts = await ctx.db.query("posts").order("desc").collect()
+        if (posts.length === 0) return []
+
+        // Enhance posts with user data and interaction status
+        return await Promise.all(
+            posts.map(async (post) => {
+                const postAuthor = await ctx.db.get(post.userId)
+
+
+                const like = await ctx.db.query("likes")
+                    .withIndex(
+                        "by_user_and_post",
+                        (q) => q.eq("userId", currentUser._id).eq("postId", post._id)
+                    )
+                    .first()
+
+                const bookmark = await ctx.db.query("bookmarks")
+                    .withIndex(
+                        "by_user_and_post",
+                        (q) => q.eq("userId", currentUser._id).eq("postId", post._id)
+                    )
+                    .first()
+
+                return {
+                    ...post,
+                    author: {
+                        _id: postAuthor?._id,
+                        username: postAuthor?.username,
+                        image: postAuthor?.image
+                    },
+                    isLiked: !!like,
+                    isBookmarked: !!bookmark,
+                }
+
+            })
+        );
 
     }
 })
