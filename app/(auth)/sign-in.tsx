@@ -1,6 +1,6 @@
 import {Image, Text, TextInput, TouchableOpacity, View} from 'react-native'
 import React from 'react'
-import {styles} from "@/styles/auth.style";
+import {styles} from "@/styles/auth.styles";
 import {Ionicons} from "@expo/vector-icons";
 import {COLORS} from "@/constants/theme";
 import {useSSO} from "@clerk/clerk-expo";
