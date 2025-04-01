@@ -13,11 +13,14 @@ export const createUser = mutation({
     handler: async(ctx, args) => {
 
         // Check if a user is already existing
-        const existingUser = await ctx.db.query("users")
+        const existingUser = await ctx.db
+            .query("users")
             .withIndex("by_clerk_id",
                 (q) => q.eq("clerkId", args.clerkId)
             )
             .first()
+
+        // await ctx.auth.getUserIdentity()
         // exit if a user exist
         if (existingUser) return
 
