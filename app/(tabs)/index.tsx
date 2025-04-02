@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, ScrollView} from "react-native";
+import {View, Text, TouchableOpacity, ScrollView, FlatList} from "react-native";
 import {styles} from "@/styles/feed.styles";
 import {Link} from "expo-router";
 import {useAuth} from "@clerk/clerk-expo";
@@ -25,6 +25,18 @@ const NoPostsFound = () => (
     </View>
 )
 
+const StoriesSection = () => (
+    <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={styles.storiesContainer}
+    >
+      {STORIES.map((story) => (
+           <Story key={story.id} story={story}/>
+      ))}
+    </ScrollView>
+)
+
 
 const Index = () => {
     const {signOut} = useAuth()
@@ -48,24 +60,18 @@ const Index = () => {
             </View>
 
             <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 60}}>
-                {/*STORY SECTION*/}
-                {/*todo : need to be optimised*/}
-                <ScrollView
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    style={styles.storiesContainer}
-                >
-                    {STORIES.map((story) => (
-                        <Story key={story.id} story={story}/>
-                    ))}
-                </ScrollView>
+
 
 
                 {/*POST SECTION*/}
-                {/*todo : need to be optimised*/}
-                {posts.map((post) => (
-                    <Post key={post._id} post={post}/>
-                ))}
+                <FlatList
+                    data={posts}
+                    renderItem={({item}) => <Post post={item}/>}
+                    keyExtractor={(item) => item._id}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{paddingBottom: 60}}
+                    ListHeaderComponent={<StoriesSection/>}
+                />
 
 
             </ScrollView>
