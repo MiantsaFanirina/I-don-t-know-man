@@ -6,10 +6,11 @@ import {Ionicons} from "@expo/vector-icons";
 import {COLORS} from "@/constants/theme";
 import {Id} from "@/convex/_generated/dataModel";
 import {useState} from "react";
-import {useMutation} from "convex/react";
+import {useMutation, useQuery} from "convex/react";
 import {api} from "@/convex/_generated/api";
 import CommentsModal from "@/components/commentsModal";
 import {formatDistanceToNow} from "date-fns";
+import {useUser} from "@clerk/clerk-expo";
 
 type postProps = {
     post: {
@@ -37,9 +38,15 @@ const Post = ({post} : postProps) => {
     const [commentsCount, setCommentsCount] = useState(post.comments)
     const [showComments, setShowComments] = useState(false)
 
+    // Get currentUser
+    const {user} = useUser() // stored in Clerk
+    const currentUser = useQuery(api.users.getUserById, user ? {clerkId: user.id} : "skip") // stored in Convex
+
+
     // Mutations
     const toggleLike = useMutation(api.posts.toggleLike)
     const toggleBookmark = useMutation(api.bookmarks.toggleBookmark)
+    const deletePost = useMutation(api.posts.deletePost)
 
     const handleLike = async () => {
         try {
@@ -54,6 +61,14 @@ const Post = ({post} : postProps) => {
     const handleBookmark = async () => {
         const newIsBookmarked = await toggleBookmark({postId: post._id})
         setIsBookmarked(newIsBookmarked)
+    }
+    const handleDelete = async () => {
+        try {
+            await deletePost({postId: post._id})
+        }
+        catch (e) {
+            console.error("Error deleting post:", e)
+        }
     }
 
     // Handle taps on the Image: double tap to like, more than 2 tap to bookmark
@@ -77,8 +92,6 @@ const Post = ({post} : postProps) => {
         }, 500); // Adjust timing if necessary
     };
 
-
-    // @ts-ignore
     return (
         <View style={styles.post}>
             {/*POST HEADER*/}
@@ -98,15 +111,16 @@ const Post = ({post} : postProps) => {
                     </TouchableOpacity>
                 </Link>
 
-                {/*todo : only if the user is owner then add delete button*/}
-                {/*<TouchableOpacity>*/}
-                {/*    <Ionicons name={"ellipsis-horizontal"} size={20} color={COLORS.white}/>*/}
-                {/*</TouchableOpacity>*/}
-
-
-                <TouchableOpacity>
-                    <Ionicons name={"trash-outline"} size={20} color={COLORS.primary}/>
-                </TouchableOpacity>
+                {/*If I'm the owner of the post, show the delete button*/}
+                {post.author._id !== currentUser?._id ?
+                    <TouchableOpacity>
+                        <Ionicons name={"ellipsis-horizontal"} size={20} color={COLORS.white}/>
+                    </TouchableOpacity>
+                    :
+                    <TouchableOpacity onPress={handleDelete}>
+                        <Ionicons name={"trash-outline"} size={20} color={COLORS.primary}/>
+                    </TouchableOpacity>
+                }
 
             </View>
 

@@ -1,5 +1,6 @@
-import {mutation, MutationCtx, QueryCtx} from "./_generated/server";
+import {mutation, MutationCtx, query, QueryCtx} from "./_generated/server";
 import {v} from "convex/values";
+import {ctx} from "expo-router/_ctx";
 
 export const createUser = mutation({
     args: {
@@ -55,3 +56,14 @@ export const getAuthenticatedUser = async (ctx: QueryCtx | MutationCtx) => {
     if (!currentUser) throw new Error("User not found")
     return currentUser;
 }
+
+export const getUserById = query({
+    args: {clerkId: v.string()},
+    handler: async (ctx, args) => {
+        return await ctx.db
+            .query("users")
+            .withIndex("by_clerk_id")
+            .first()
+
+    }
+})

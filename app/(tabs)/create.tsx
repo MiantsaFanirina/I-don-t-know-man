@@ -66,6 +66,9 @@ const CreateScreen = () => {
 
             await createPost({storage: storage, caption: caption})
 
+            setSelectedImage(null)
+            setCaption("")
+
             router.push("/(tabs)")
         }
         catch (e) {
