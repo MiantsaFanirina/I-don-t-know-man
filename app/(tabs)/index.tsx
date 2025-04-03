@@ -59,22 +59,21 @@ const Index = () => {
                 </TouchableOpacity>
             </View>
 
-            <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{paddingBottom: 60}}>
 
 
 
-                {/*POST SECTION*/}
-                <FlatList
-                    data={posts}
-                    renderItem={({item}) => <Post post={item}/>}
-                    keyExtractor={(item) => item._id}
-                    showsVerticalScrollIndicator={false}
-                    contentContainerStyle={{paddingBottom: 60}}
-                    ListHeaderComponent={<StoriesSection/>}
-                />
+            {/*POST SECTION*/}
+            <FlatList
+                data={posts}
+                renderItem={({item}) => <Post post={item}/>}
+                keyExtractor={(item) => item._id}
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{paddingBottom: 60}}
+                ListHeaderComponent={<StoriesSection/>}
+            />
 
+            {/**/}
 
-            </ScrollView>
         </View>
     );
 };

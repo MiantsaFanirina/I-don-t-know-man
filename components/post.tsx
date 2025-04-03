@@ -6,9 +6,10 @@ import {Ionicons} from "@expo/vector-icons";
 import {COLORS} from "@/constants/theme";
 import {Id} from "@/convex/_generated/dataModel";
 import {useState} from "react";
-import {toggleLike} from "@/convex/posts";
 import {useMutation} from "convex/react";
 import {api} from "@/convex/_generated/api";
+import CommentsModal from "@/components/commentsModal";
+import {formatDistanceToNow} from "date-fns";
 
 type postProps = {
     post: {
@@ -31,9 +32,14 @@ type postProps = {
 const Post = ({post} : postProps) => {
 
     const [isLiked, setIsLiked] = useState(post.isLiked)
+    const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked)
     const [likesCount, setLikesCount] = useState(post.likes)
+    const [commentsCount, setCommentsCount] = useState(post.comments)
+    const [showComments, setShowComments] = useState(false)
 
+    // Mutations
     const toggleLike = useMutation(api.posts.toggleLike)
+    const toggleBookmark = useMutation(api.bookmarks.toggleBookmark)
 
     const handleLike = async () => {
         try {
@@ -45,20 +51,34 @@ const Post = ({post} : postProps) => {
             console.error("Error toggling like:", e)
         }
     }
-
-    // Handle double tap on the Image to handle Like
-    let lastTap = Date.now();
-    const handleDoubleTap = async () => {
-        const now = Date.now();
-        const DOUBLE_PRESS_DELAY = 1000;
-        if (lastTap && (now - lastTap) < DOUBLE_PRESS_DELAY) {
-            await handleLike()
-        } else {
-            lastTap = now;
-        }
+    const handleBookmark = async () => {
+        const newIsBookmarked = await toggleBookmark({postId: post._id})
+        setIsBookmarked(newIsBookmarked)
     }
 
+    // Handle taps on the Image: double tap to like, more than 2 tap to bookmark
+    let tapCount = 0;
+    let tapTimeout: NodeJS.Timeout | null = null;
+    const handleTap = async () => {
+        tapCount++;
 
+        if (tapTimeout) {
+            clearTimeout(tapTimeout);
+        }
+
+        tapTimeout = setTimeout(async () => {
+            if (tapCount === 2) {
+                await handleLike();
+            } else if (tapCount > 2) {
+                await handleBookmark();
+            }
+            tapCount = 0;
+            tapTimeout = null;
+        }, 500); // Adjust timing if necessary
+    };
+
+
+    // @ts-ignore
     return (
         <View style={styles.post}>
             {/*POST HEADER*/}
@@ -91,7 +111,7 @@ const Post = ({post} : postProps) => {
             </View>
 
             {/*IMAGE*/}
-            <TouchableWithoutFeedback onPress={handleDoubleTap}>
+            <TouchableWithoutFeedback onPress={handleTap}>
                 <Image
                     source={post.imageUrl}
                     style={styles.postImage}
@@ -112,13 +132,17 @@ const Post = ({post} : postProps) => {
                         />
                     </TouchableOpacity>
                     
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => setShowComments(true)}>
                         <Ionicons name={"chatbubble-outline"} size={22} color={COLORS.white}/>
                     </TouchableOpacity>
                 </View>
 
-                <TouchableOpacity>
-                    <Ionicons name={"bookmark-outline"} size={22} color={COLORS.white}/>
+                <TouchableOpacity onPress={handleBookmark}>
+                    <Ionicons
+                        name={isBookmarked ? "bookmark" : "bookmark-outline"}
+                        size={22}
+                        color={COLORS.white}
+                    />
                 </TouchableOpacity>
             </View>
 
@@ -135,15 +159,25 @@ const Post = ({post} : postProps) => {
                     </View>
                 )}
 
-                <TouchableOpacity>
-                    <Text style={styles.commentsText}>View all 2 comments</Text>
-                </TouchableOpacity>
+                {commentsCount > 0 && (
+                    <TouchableOpacity>
+                        <Text style={styles.commentsText}>
+                            View all {commentsCount} comments
+                        </Text>
+                    </TouchableOpacity>
+                )}
+
 
                 <Text style={styles.timeAgo}>
-                    2 hours ago
+                    {formatDistanceToNow(post._creationTime, {addSuffix: true})}
                 </Text>
             </View>
-
+            <CommentsModal
+                postId={post._id}
+                visible={showComments}
+                onClose={() => setShowComments(false)}
+                onCommentAdded={() => setCommentsCount((prev) => prev + 1)}
+            />
         </View>
     );
 };
