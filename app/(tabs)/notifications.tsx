@@ -11,8 +11,8 @@ const NoNotificationsFound = () => (
     <View
         style={[styles.container, styles.centered]}
     >
-        <Ionicons name={"notifications-outline"} size={48} color={COLORS.primary}/>
-        <Text style={{fontSize: 20, color: COLORS.white, marginTop: 6}}>No notifications yet</Text>
+        <Ionicons name={"notifications-outline"} size={48} color={COLORS.grey}/>
+        <Text style={{fontSize: 16, color: COLORS.grey, marginTop: 6}}>No notifications yet</Text>
     </View>
 )
 

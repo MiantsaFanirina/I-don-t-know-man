@@ -1,15 +1,13 @@
-import {View, Text, TouchableOpacity, ScrollView, FlatList} from "react-native";
+import {View, Text, TouchableOpacity, FlatList} from "react-native";
 import {styles} from "@/styles/feed.styles";
-import {Link} from "expo-router";
 import {useAuth} from "@clerk/clerk-expo";
 import {Ionicons} from "@expo/vector-icons";
 import {COLORS} from "@/constants/theme";
-import {STORIES} from "@/constants/mock-data";
-import Story from "@/components/story";
 import {useQuery} from "convex/react";
 import {api} from "@/convex/_generated/api";
 import Loader from "@/components/loader";
 import Post from "@/components/post";
+import Stories from "@/components/stories";
 
 
 const NoPostsFound = () => (
@@ -23,18 +21,6 @@ const NoPostsFound = () => (
     >
         <Text style={{fontSize: 20, color: COLORS.primary}}>No posts yet</Text>
     </View>
-)
-
-const StoriesSection = () => (
-    <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={styles.storiesContainer}
-    >
-      {STORIES.map((story) => (
-           <Story key={story.id} story={story}/>
-      ))}
-    </ScrollView>
 )
 
 
@@ -69,7 +55,7 @@ const Index = () => {
                 keyExtractor={(item) => item._id}
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{paddingBottom: 60}}
-                ListHeaderComponent={<StoriesSection/>}
+                ListHeaderComponent={<Stories/>}
             />
 
             {/**/}
