@@ -22,6 +22,7 @@ const CommentsModal = ({postId, visible, onClose, onCommentAdded} : CommentsModa
     const comments = useQuery(api.comments.getComments, { postId })
     const addComment = useMutation(api.comments.addComment)
 
+
     const handleAddComment = async () => {
         if (!newComment.trim()) return
 
@@ -39,7 +40,6 @@ const CommentsModal = ({postId, visible, onClose, onCommentAdded} : CommentsModa
         }
     }
 
-    // @ts-ignore
     return (
         <Modal visible={visible} animationType={"slide"} transparent={true} onRequestClose={onClose}>
 

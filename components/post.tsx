@@ -112,14 +112,13 @@ const Post = ({post} : postProps) => {
                 </Link>
 
                 {/*If I'm the owner of the post, show the delete button*/}
-                {post.author._id !== currentUser?._id ?
+                {post.author._id !== currentUser?._id ? (
                     <TouchableOpacity>
                         <Ionicons name={"ellipsis-horizontal"} size={20} color={COLORS.white}/>
-                    </TouchableOpacity>
-                    :
-                    <TouchableOpacity onPress={handleDelete}>
+                    </TouchableOpacity>)
+                    : (<TouchableOpacity onPress={handleDelete}>
                         <Ionicons name={"trash-outline"} size={20} color={COLORS.primary}/>
-                    </TouchableOpacity>
+                    </TouchableOpacity>)
                 }
 
             </View>
