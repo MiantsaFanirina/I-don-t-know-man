@@ -98,7 +98,12 @@ const Post = ({post} : postProps) => {
             <View style={styles.postHeader}>
 
                 {/*POST AUTHOR INFO*/}
-                <Link href={"/notifications"}>
+                <Link
+                    href={
+                        currentUser?._id === post.author._id ? "/(tabs)/profile" : `/user/${post.author._id}`
+                    }
+                    asChild={true}
+                >
                     <TouchableOpacity style={styles.postHeaderLeft}>
                         <Image
                             source={post.author.image}

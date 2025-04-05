@@ -37,6 +37,7 @@ const Profile = () => {
     const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
 
     const {signOut, userId} = useAuth()
+    console.log(userId)
 
     // QUERIES & MUTATIONS
     const currentUser = useQuery(api.users.getUserById, userId ? {clerkId: userId} : "skip")

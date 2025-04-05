@@ -13,7 +13,7 @@ const Notification = ({notification}: any) => {
 
                 {/*NOTIFICATION DETAILS*/}
                 {/*todo : fix href*/}
-                <Link href={`/notifications`} asChild={true}>
+                <Link href={`/user/${notification.sender._id}`} asChild={true}>
                     <TouchableOpacity style={styles.avatarContainer}>
                         <Image
                             source={notification.sender.image}
