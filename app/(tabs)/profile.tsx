@@ -44,7 +44,6 @@ const Profile = () => {
 
     // QUERIES & MUTATIONS
     const currentUser = useQuery(api.users.getUserById, userId ? {clerkId: userId} : "skip")
-    if (!currentUser) throw new Error("User does not exist");
     const posts = useQuery(api.posts.getPostByUser, {})
     const updateProfile = useMutation(api.users.updateProfile)
 
