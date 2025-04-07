@@ -1,6 +1,6 @@
 import {View, Text, TouchableOpacity, FlatList} from "react-native";
 import {styles} from "@/styles/feed.styles";
-import {useAuth} from "@clerk/clerk-expo";
+import {useClerk} from "@clerk/clerk-expo";
 import {Ionicons} from "@expo/vector-icons";
 import {COLORS} from "@/constants/theme";
 import {useQuery} from "convex/react";
@@ -25,7 +25,8 @@ const NoPostsFound = () => (
 
 
 const Index = () => {
-    const {signOut} = useAuth()
+    const {signOut} = useClerk()
+
 
     // Get all posts
     const posts = useQuery(api.posts.getFeedPost)

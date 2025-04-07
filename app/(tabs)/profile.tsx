@@ -8,7 +8,7 @@ import {
     TouchableWithoutFeedback,
     View
 } from "react-native";
-import {useAuth} from "@clerk/clerk-expo";
+import { useClerk, useUser} from "@clerk/clerk-expo";
 import {useState} from "react";
 import {useMutation, useQuery} from "convex/react";
 import {api} from "@/convex/_generated/api";
@@ -36,11 +36,15 @@ const NoPostsFound = () => (
 const Profile = () => {
     const [isEditModalVisible, setIsEditModalVisible] = useState<boolean>(false);
 
-    const {signOut, userId} = useAuth()
-    console.log(userId)
+    const {signOut} = useClerk()
+    const {user} = useUser()
+    if(!user) throw new Error("User does not exist");
+
+    const userId = user.id
 
     // QUERIES & MUTATIONS
     const currentUser = useQuery(api.users.getUserById, userId ? {clerkId: userId} : "skip")
+    if (!currentUser) throw new Error("User does not exist");
     const posts = useQuery(api.posts.getPostByUser, {})
     const updateProfile = useMutation(api.users.updateProfile)
 

@@ -10,12 +10,15 @@ export default function Page() {
 
     const {startSSOFlow} = useSSO()
     const router = useRouter()
+
+
+
     const handleGoogleSignIn = async () => {
         try {
             const {createdSessionId, setActive} = await startSSOFlow({strategy: "oauth_google"})
             if(setActive && createdSessionId) {
-                setActive({ session: createdSessionId })
-                router.replace('/(tabs)')
+                await setActive!({session: createdSessionId})
+                router.push('/(tabs)')
             }
         } catch (e) {
             console.error("OAuth error", e)
@@ -27,9 +30,9 @@ export default function Page() {
             {/*BRAND SECTION*/}
             <View style={styles.brandSection}>
                 <View style={styles.logoContainer}>
-                    <Ionicons name={'leaf'} size={32} color={COLORS.primary} />
+                    <Ionicons name={'logo-instagram'} size={32} color={COLORS.primary} />
                 </View>
-                <Text style={styles.appName}>Insta</Text>
+                <Text style={styles.appName}>Instagreen</Text>
                 <Text style={styles.tagline}>Don't miss anything</Text>
             </View>
 

@@ -20,7 +20,6 @@ import * as FileSystem from "expo-file-system";
 import {Image} from "expo-image";
 import {useMutation} from "convex/react";
 import {api} from "@/convex/_generated/api";
-import {Id} from "@/convex/_generated/dataModel";
 
 const CreateScreen = () => {
     const router = useRouter()
@@ -62,8 +61,6 @@ const CreateScreen = () => {
 
             const result = JSON.parse(uploadResult.body)
             const storage = result.storageId
-            console.log(storage)
-
             await createPost({storage: storage, caption: caption})
 
             setSelectedImage(null)
