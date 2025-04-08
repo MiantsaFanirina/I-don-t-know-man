@@ -1,4 +1,4 @@
-# InstaGreen 🌿
+# Instagreen 🌿
 
 InstaGreen is an Instagram clone built using **React Native** and **Expo**, created to deepen my understanding of mobile app development and demonstrate my full-stack skillset. This project integrates **Convex** as a backend and **Clerk** for seamless user authentication and management.
 
