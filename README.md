@@ -27,19 +27,14 @@ InstaGreen is an Instagram clone built using **React Native** and **Expo**, crea
 
 ## 📸 Screenshots
 
-<img src="./assets/screenshots/login.png" width="30%" />
-<img src="./assets/screenshots/feed.png" width="30%" />
-<img src="./assets/screenshots/comments.png" width="30%" />
+<img src="./assets/screenshots/login.PNG" width="30%" />
+<img src="./assets/screenshots/feed.PNG" width="30%" />
+<img src="./assets/screenshots/comments.PNG" width="30%" />
 
-<img src="./assets/screenshots/bookmarks.png" width="30%" />
-<img src="./assets/screenshots/create.png" width="30%" />
+<img src="./assets/screenshots/bookmarks.PNG" width="30%" />
+<img src="./assets/screenshots/create.PNG" width="30%" />
 <img src="./assets/screenshots/notifications.png" width="30%" />
 
-<img src="./assets/screenshots/user_profile.png" width="30%" />
-<img src="./assets/screenshots/my_profile.png" width="30%" />
-<img src="./assets/screenshots/edit_my_profile.png" width="30%" />
-
----
-
-> Make sure your images are saved in `assets/screenshots/` and are named accordingly.
-
+<img src="./assets/screenshots/user_profile.PNG" width="30%" />
+<img src="./assets/screenshots/my_profile.PNG" width="30%" />
+<img src="./assets/screenshots/edit_my_profile.PNG" width="30%" />
