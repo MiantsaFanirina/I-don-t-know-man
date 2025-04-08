@@ -27,14 +27,19 @@ InstaGreen is an Instagram clone built using **React Native** and **Expo**, crea
 
 ## 📸 Screenshots
 
-<img src="./assets/screenshots/login.PNG" width="30%" />
-<img src="./assets/screenshots/feed.PNG" width="30%" />
-<img src="./assets/screenshots/comments.PNG" width="30%" />
+<div style="display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap;">
 
-<img src="./assets/screenshots/bookmarks.PNG" width="30%" />
-<img src="./assets/screenshots/create.PNG" width="30%" />
-<img src="./assets/screenshots/notifications.png" width="30%" />
+  <img src="./assets/screenshots/login.PNG" style="width: 32%; margin-bottom: 10px;" />
+  <img src="./assets/screenshots/feed.PNG" style="width: 32%; margin-bottom: 10px;" />
+  <img src="./assets/screenshots/comments.PNG" style="width: 32%; margin-bottom: 10px;" />
 
-<img src="./assets/screenshots/user_profile.PNG" width="30%" />
-<img src="./assets/screenshots/my_profile.PNG" width="30%" />
-<img src="./assets/screenshots/edit_my_profile.PNG" width="30%" />
+  <img src="./assets/screenshots/bookmarks.PNG" style="width: 32%; margin-bottom: 10px;" />
+  <img src="./assets/screenshots/create.PNG" style="width: 32%; margin-bottom: 10px;" />
+  <img src="./assets/screenshots/notifications.PNG" style="width: 32%; margin-bottom: 10px;" />
+
+  <img src="./assets/screenshots/user_profile.PNG" style="width: 32%; margin-bottom: 10px;" />
+  <img src="./assets/screenshots/my_profile.PNG" style="width: 32%; margin-bottom: 10px;" />
+  <img src="./assets/screenshots/edit_my_profile.PNG" style="width: 32%; margin-bottom: 10px;" />
+
+</div>
+
