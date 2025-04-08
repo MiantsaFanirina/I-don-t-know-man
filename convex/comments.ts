@@ -44,7 +44,7 @@ export const getComments = query({
     args: {postId: v.id("posts")},
     handler: async (ctx, args) => {
         const comments = await ctx.db.query("comments")
-            .withIndex("by_post")
+            .withIndex("by_post", (q) => q.eq("postId", args.postId))
             .collect()
 
 

@@ -40,7 +40,7 @@ const Index = () => {
 
             {/*HEADER*/}
             <View style={styles.header}>
-                <Text style={styles.headerTitle}>Spotlight</Text>
+                <Text style={styles.headerTitle}>Instagreen</Text>
                 <TouchableOpacity onPress={() => signOut()}>
                     <Ionicons name={"log-out-outline"} size={24} color={COLORS.white} />
                 </TouchableOpacity>

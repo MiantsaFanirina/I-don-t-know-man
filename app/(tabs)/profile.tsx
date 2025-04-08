@@ -38,9 +38,7 @@ const Profile = () => {
 
     const {signOut} = useClerk()
     const {user} = useUser()
-    if(!user) throw new Error("User does not exist");
-
-    const userId = user.id
+    const userId = user?.id
 
     // QUERIES & MUTATIONS
     const currentUser = useQuery(api.users.getUserById, userId ? {clerkId: userId} : "skip")

@@ -39,8 +39,9 @@ const Post = ({post} : postProps) => {
     const [showComments, setShowComments] = useState(false)
 
     // Get currentUser
-    const {user} = useUser() // stored in Clerk
-    const currentUser = useQuery(api.users.getUserById, user ? {clerkId: user.id} : "skip") // stored in Convex
+    const {user} = useUser()
+    const userId = user?.id
+    const currentUser = useQuery(api.users.getUserById, userId ? {clerkId: userId} : "skip") // stored in Convex
 
 
     // Mutations
